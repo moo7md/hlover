@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # This project is created to make HTML coding much easier and simpler
 # Author: Mohammed Alsharaf
 # Date: 8/18/2019
@@ -10,7 +12,7 @@ import Worker
 
 
 def main():
-    if len(sys.argv) == 0:
+    if len(sys.argv) == 1:
         print("Error: no input files")
     elif str(sys.argv[0]).endswith('.hl'):
         start_working(sys.argv[0])
