@@ -8,8 +8,8 @@ Currently, your HTML code will be printed to stdout, but in future versions your
 
 ## Syntax
 Hlover syntax is simple. All HTML tags are preserved so it is much easier for HTML developers to use. There are two elements levels. 
-1- HTML level.
-2- Element level.
+1. HTML level.
+2. Element level.
 All HTML level elements are written like this
 
     tag_name[attributes]{body} 
@@ -29,5 +29,5 @@ Some tags don't need a body part, such as `meta` and `img`
 
     p{...}
 ## Not working yet
-Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.
-
+* Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.
+* some characters like !, {, }, [, ], need to be escaped.
