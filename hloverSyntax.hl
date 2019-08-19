@@ -6,7 +6,7 @@ html{
         !link[href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet"]
         !link[href="css/style.css" rel="stylesheet"]
         !link[href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"]
-        !script[src="script.js"]{}
+        !script[src="script.js"]{function foo(){consle.log("hi")}}
     }
     !body{
         !nav[id = "mainNav" role="navigation"]{
