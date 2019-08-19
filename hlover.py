@@ -15,7 +15,7 @@ def main():
     if len(sys.argv) == 1:
         print("Error: no input files")
     elif str(sys.argv[0]).endswith('.hl'):
-        start_working(sys.argv[0])
+        start_working(sys.argv[1])
     else:
         print("Error: unsupported file type")
 
