@@ -1,49 +1,12 @@
-html{
-    !head{
-        !title{MONO Programming Language}
-        !meta[lang="en"]
-        !meta[charset="utf-8"]
-        !link[href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet"]
-        !link[href="css/style.css" rel="stylesheet"]
-        !link[href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet"]
-        !script[src="script.js"]{function foo(){consle.log("hi")}}
-    }
-    !body{
-        !nav[id = "mainNav" role="navigation"]{
-            !header[id = "mainHeader"]{
-                !a[href="index.html"]{!img[src="img/output-onlinepngtools.png" width="150"]}
-            }
-            !ul[class="navList"]{
-                !li[class="firstElement"]{
-                    !a[class = "navList" href="about.html"]{About}
-                }
-                !li[class="navList"]{
-                    !a[href="how_to.html" class = "navList"]{How to Use}
-                }
-                !li[class="navList"]{
-                    !a[href="ref.html" class = "navList"]{Reference}
-                    !ul[class="howToUSeSubList"]{
-                        !li[class="howToUSeSubList"]{!a[class = "howToUSeSubList" href = "syntax.html"]{Syntax}}
-                        !li[class = "howToUSeSubList"]{!a[class = "howToUSeSubList" href = "commands.html"]{Commands}}
-                        !li[class = "howToUSeSubList"]{!a[class = "howToUSeSubList" href = "lib.html"]{Libraries}}
-                    }
-                }
-                !li[class="navList"]{
-                    !a[class = "navList"]{Download}
-                }
-                !li[class="navList"]{
-                    !a[class = "navList"]{Contact Us}
-                }
-            }
-        }
-        !main[id = "main" role = "main"]{
-            !div[id = "theBody" class = "textBody"]{
-                
-            }
-        }
-        !footer{
-            !a[href="index.html"><img src = "img/image.png" class = "logoRight" width="150"]{}
-            !p[class = "footer"]{Creator: Mohammed Alsharaf<br>Email: MohammedAlsharaf@outlook.com<br>Since: 2015-now}
-        }
-    }
-}
+xhtml1s   
+
+
+
+
+
+
+
+
+
+
+
