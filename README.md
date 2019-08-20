@@ -30,6 +30,7 @@ Some tags don't need a body part, such as `meta` and `img`
 
     p{...}
 or
+    
     p[]{...}
 both are the same
 ## Not working yet
