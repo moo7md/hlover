@@ -1,12 +1,9 @@
-xhtml1s   
-
-
-
-
-
-
-
-
-
-
-
+xhtml1s
+html{
+    !head{
+        
+    }
+    !body{
+        
+    }
+}

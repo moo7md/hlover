@@ -12,15 +12,18 @@ import sys
 # constants for !doctype
 doctypes = {"html5": '<!DOCTYPE html>',
             "html4s": '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">',
-            "html4t": '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">',
-            "html4f": '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">',
+            "html4t": '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" '
+                      '"http://www.w3.org/TR/html4/loose.dtd">',
+            "html4f": '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" '
+                      '"http://www.w3.org/TR/html4/frameset.dtd">',
             "xhtml1s": '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" '
                        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> ',
             "xhtml1t": '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
                        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> ',
             "xhtml1f": '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" '
                        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"> ',
-            "xhtml1.1": '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'}
+            "xhtml1.1": '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" '
+                        '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'}
 
 
 def get_string(char, file):
@@ -131,12 +134,13 @@ def start(file):
         while char != '':
             if is_doctype(token):
                 print(doctypes[token])
+                token = ''
             if (char == '[') or (char == '{'):
                 # if token.__contains__('p'):
                 new_str = do_element(f, char, token)
                 print(new_str)
                 token = ''
-            if (char != '[') and (char != '{') and (char != '\n') and (char != '}'):
+            if (char != ' ') and (char != '[') and (char != '{') and (char != '\n') and (char != '}'):
                 token += char
             char = f.read(1)
         # in case doctype was the only thing in the file
@@ -149,10 +153,8 @@ def main():
         print("Error: no input files")
     elif str(sys.argv[1]).endswith('.hl'):
         start_working(sys.argv[1])
-
-
-# else:
-#     print("Error: unsupported file type")
+    else:
+        print("Error: unsupported file type")
 
 
 def start_working(filename):
