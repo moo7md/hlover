@@ -1,9 +1,17 @@
-xhtml1s
+html5
 html{
     !head{
-        
+        !meta[lang="en"]
+        !title{Page title}
+        !!--{!style{
+            p{
+                font-family: monospace;
+                color: red;
+                font-size: 30px;
+            }
+        }}
     }
     !body{
-        
+        !p{This is a paragraph element\!}
     }
 }

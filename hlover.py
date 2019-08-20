@@ -86,7 +86,7 @@ def do_element(file, char, tag):
             attr += char
             char = file.read(1)
         char = file.read(1)
-        while char == ' ':
+        while char == ' ' and char != '':
             char = file.read(1)
     if char == '{':
         char = file.read(1)
@@ -96,7 +96,7 @@ def do_element(file, char, tag):
             if char == '!':
                 sub_tag = ''
                 char = file.read(1)
-                while char != '[' and char != '{':
+                while char != '[' and char != '{' and char != '':
                     sub_tag += char
                     char = file.read(1)
                 sub_body = do_element(file, char, sub_tag)
@@ -105,7 +105,7 @@ def do_element(file, char, tag):
             elif char == '\\':
                 body += file.read(1)
                 char = file.read(1)
-            elif tag == 'script':
+            elif tag == 'script' or tag == 'style' or tag == '!--':
                 body += writeScriptBody(char, file)
                 break
             else:
