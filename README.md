@@ -29,5 +29,5 @@ Some tags don't need a body part, such as `meta` and `img`
 
     p{...}
 ## Not working yet
-* Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.
-* some characters like !, {, }, [, ], need to be escaped.
+* ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
+* ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
