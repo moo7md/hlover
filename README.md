@@ -12,11 +12,11 @@ Hlover syntax is simple. All HTML tags are preserved so it is much easier for HT
 2. Element level.
 All HTML level elements are written like this
 
-    tag_name[attributes]{body} 
+    `tag_name[attributes]{body}`
 
 and all element level elements must have '!' before the tag_name
 
-    !tag_name[attributes]{body}
+    `!tag_name[attributes]{body}`
 > Note: element level tags are elements inside an element.
 
 Some tags don't need a body part, such as `meta` and `img`
