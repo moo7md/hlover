@@ -149,7 +149,6 @@ def main():
         print("Error: no input files")
     elif str(sys.argv[1]).endswith('.hl'):
         start_working(sys.argv[1])
-    # start_working('/Users/moo7md/PycharmProjects/hlover/hloverSyntax.hl')
 
 
 # else:
