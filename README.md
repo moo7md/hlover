@@ -48,7 +48,7 @@ Hlover makes declaring doctypes much easier. If you want to add a doctype, just 
                        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">`
 * `xhtml1.1` for `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"`
 ### Paragraph tag tips:
-Since some special characters in Hlover has some functionality, users must escape them usnig '\'. For example, if you want to write '!' in the body of the paragraph, the user have to include '\' before '!' to escape it from its fictionality.
+Since some special characters in Hlover has some functionality, users must escape them usnig '\\'. For example, if you want to write '!' in the body of the paragraph, the user have to include '\\' before '!' to escape it from its fictionality.
     
     p{Hello World\!}
 > Note: failing to escape any special character may cause unwanted results
