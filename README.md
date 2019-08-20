@@ -23,12 +23,15 @@ and all element level elements must have '!' before the tag_name
 Some tags don't need a body part, such as `meta` and `img`
 
     meta[...]
-    !img[...]
+    img[...]
   ### Attributes
   Attributes are the same as HTML, they are just inside '[]'. You can leave it empty, or don't put it at all.
   
 
     p{...}
+or
+    p[]{...}
+both are the same
 ## Not working yet
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
