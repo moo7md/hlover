@@ -52,6 +52,6 @@ Since some special characters in Hlover has some functionality, users must escap
     
     p{Hello World\!}
 > Note: failing to escape any special character may cause unwanted results
-## Not working yet
+## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
