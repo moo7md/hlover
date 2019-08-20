@@ -78,5 +78,5 @@ Output =>
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
-* ~~style element is not working yet.
+* ~~style element is not working yet.~~
 * ~~comments are not working properly.~~
