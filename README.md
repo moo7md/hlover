@@ -10,6 +10,7 @@ Currently, your HTML code will be printed to stdout, but in future versions your
 Hlover syntax is simple. All HTML tags are preserved so it is much easier for HTML developers to use. There are two elements levels. 
 1. HTML level.
 2. Element level.
+
 All HTML level elements are written like this
 
     tag_name[attributes]{body}
