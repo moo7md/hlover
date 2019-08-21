@@ -96,6 +96,7 @@ In addition, sub-tags can override their parents' inherited attributes by placin
         }
     }
 Output =>
+
     <!DOCTYPE html>
     <html >
         <body id="main" style="font-family: monospace;" name="none" class="box" >
