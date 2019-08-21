@@ -10,7 +10,7 @@ Currently, your HTML code will be printed to stdout, but in future versions your
 *   [How to use](#How-to-use)
 *   [Syntax](#Syntax)
     *   [Attributes](#Attributes)
-    *   [!Doctype](#!Doctype)
+    *   [!Doctype](#Doctype)
     *   [Paragraph tag tips](#Paragraph-tag-tips)
 *   [Example](#Example)
 *   [Inheritance](#Inheritance)
