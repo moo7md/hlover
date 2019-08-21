@@ -8,6 +8,8 @@
 
 import os.path
 import sys
+import re
+from Class import Class
 
 # constants for !doctype
 doctypes = {"html5": '<!DOCTYPE html>',
@@ -24,6 +26,8 @@ doctypes = {"html5": '<!DOCTYPE html>',
                        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"> ',
             "xhtml1.1": '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" '
                         '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'}
+# memory to hold classes and variables
+mem = {}
 
 
 def get_string(char, file):
@@ -75,10 +79,67 @@ def writeScriptBody(char, file):
     return body
 
 
-def do_element(file, char, tag):
+def has(x):
+    return '' if x.count('"') == 2 else '"'
+
+
+def mirge_attr(attr, inherit_attr):
+    # construct the new attr. Checks if there are overriding is happening
+    new_attr = ''
+    attr = re.sub(r'\s*(=)\s*', ' ', attr.strip())  # remove all whitespace between =
+    attr = re.sub(r'(")\s+', '" ', attr.strip())  # remove all whitespace in between attr
+    a_array = re.split(r'(\s\")|(\"\s)', attr)  # split the string
+    a_array = list(filter(lambda a: a != None and a != ' "' and a != '" ', a_array))
+
+    inherit_attr = re.sub(r'\s*(=)\s*', ' ', inherit_attr.strip())  # remove all whitespace between =
+    inherit_attr = re.sub(r'(")\s+', '" ', inherit_attr.strip())  # remove all whitespace in between attr
+    i_array = re.split(r'(\s\")|(\"\s)', inherit_attr)  # split the string
+    i_array = list(filter(lambda a: a != None and a != ' "' and a != '" ', i_array))
+    for string in a_array:
+        if i_array.__contains__(string):
+            i_array.pop(i_array.index(string) + 1)
+            i_array.remove(string)
+    i = 0
+    while i < len(a_array):
+        if i == len(a_array) - 1:
+            new_attr += a_array[i] + ' '
+            i += 2
+        else:
+            if a_array[i+1].count('"') == 1:
+                new_attr += a_array[i] + '=' + '"' + a_array[i + 1] + ' '
+            else:
+                new_attr += a_array[i] + '=' + '"' + a_array[i + 1] + '" '
+            i += 2
+    i = 0
+    while i < len(i_array):
+        if i == len(i_array) - 1:
+            new_attr += i_array[i] + ' '
+            i += 2
+        else:
+            if i_array[i + 1].count('"') == 1:
+                new_attr += i_array[i] + '=' + '"' + i_array[i + 1] + ' '
+            else:
+                new_attr += i_array[i] + '=' + '"' + i_array[i + 1] + '" '
+            i += 2
+
+    return new_attr
+
+
+def do_element(file, char, tag, inherit_attr):
     result = '<' + tag
     attr = ''
     body = ''
+    if char == '(':
+        # save inherit attr for sub-tags
+        char = file.read(1)
+        temp_inherit = ''
+        while char != ')' and char != '':
+            temp_inherit += char
+            char = file.read(1)
+        char = file.read(1)
+        inherit_attr = mirge_attr(temp_inherit, inherit_attr) if inherit_attr != '' else temp_inherit
+        while char == ' ' and char != '':
+            char = file.read(1)
     if char == '[':
         result += ' '
         char = file.read(1)
@@ -88,6 +149,9 @@ def do_element(file, char, tag):
         char = file.read(1)
         while char == ' ' and char != '':
             char = file.read(1)
+    else:
+        attr = inherit_attr
+
     if char == '{':
         char = file.read(1)
         if char == '}':
@@ -96,10 +160,10 @@ def do_element(file, char, tag):
             if char == '!':
                 sub_tag = ''
                 char = file.read(1)
-                while char != '[' and char != '{' and char != '':
+                while char != '[' and char != '{' and char != '' and char != '(':
                     sub_tag += char
                     char = file.read(1)
-                sub_body = do_element(file, char, sub_tag)
+                sub_body = do_element(file, char, sub_tag, inherit_attr)
                 body += sub_body
                 char = file.read(1)
             elif char == '\\':
@@ -116,7 +180,10 @@ def do_element(file, char, tag):
         result += attr + '>'
         file.seek(file.tell() - 2)
     else:
-        result += attr + '>' + body + '</' + tag + '>'
+        if result[len(result)-1] != ' ':
+            result += ' '
+        result += (attr if inherit_attr == '' or attr == inherit_attr else mirge_attr(attr,
+                                                                                      inherit_attr)) + '>' + body + '</' + tag + '>'
 
     return result
 
@@ -135,12 +202,11 @@ def start(file):
             if is_doctype(token):
                 print(doctypes[token])
                 token = ''
-            if (char == '[') or (char == '{'):
-                # if token.__contains__('p'):
-                new_str = do_element(f, char, token)
+            if (char == '[') or (char == '{') or (char == '('):
+                new_str = do_element(f, char, token, '')
                 print(new_str)
                 token = ''
-            if (char != ' ') and (char != '[') and (char != '{') and (char != '\n') and (char != '}'):
+            if (char != ' ') and (char != '[') and (char != '{') and (char != '\n') and (char != '}') and (char != '('):
                 token += char
             char = f.read(1)
         # in case doctype was the only thing in the file
@@ -149,12 +215,13 @@ def start(file):
 
 
 def main():
-    if len(sys.argv) == 1:
-        print("Error: no input files")
-    elif str(sys.argv[1]).endswith('.hl'):
-        start_working(sys.argv[1])
-    else:
-        print("Error: unsupported file type")
+    # if len(sys.argv) == 1:
+    #     print("Error: no input files")
+    # elif str(sys.argv[1]).endswith('.hl'):
+    #     start_working(sys.argv[1])
+    # else:
+    #     print("Error: unsupported file type")
+    start_working('/Users/moo7md/PycharmProjects/hlover/hloverSyntax.hl')
 
 
 def start_working(filename):

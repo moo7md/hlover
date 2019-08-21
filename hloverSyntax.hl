@@ -1,17 +1,8 @@
 html5
 html{
-    !head{
-        !meta[lang="en"]
-        !title{Page title}
-        !!--{!style{
-            p{
-                font-family: monospace;
-                color: red;
-                font-size: 30px;
-            }
-        }}
-    }
-    !body{
-        !p{This is a paragraph element\!}
+    !body(style="font-family: monospace;" name="none" class="box")[id="main"]{
+        !p(class="what" readonly="")[id="p1"]{TEST\!}
+        !p(class="what" readonly="")[id="p2" style  = "font-family: Serif;"]{TEST\!}
+        !p[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
     }
 }
