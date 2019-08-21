@@ -75,6 +75,36 @@ Output =>
             <p>This is a paragraph element!</p>
         </body>
     </html>
+## Inheritance
+One of the big problems most HTML developers face are writing the same attributes for almost every element in the page. Thus, I was motivated to solve this problem by including inheritance to Hlover. By simply adding inherited attributes to an element, all its children elements will inherit those attributes.
+### Syntax
+To add attributes to the inheritance part of an element, user simply put those attributes inside parentheses and place them right after the tag name. It can not be placed anywhere else. This is how it should look like:
+
+    tag_name(inherited attributes){...}
+In addition, sub-tags can override their parents' inherited attributes by placing those attributes inside brackets and placed right after the inherited attributes. This is how it should look like:
+
+    tag_name(inherited attributes)[overrode attributes]{...}
+### Example
+
+    html5
+    html{
+        !body(style="font-family: monospace;" name="none" class="box")[id="main"]{
+            !p(class="what" readonly="")[id="p1"]{TEST\!}
+            !p[id="p2" style  = "font-family: Serif;"]{TEST\!}
+            !p[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
+            !p(class="special")[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
+        }
+    }
+Output =>
+    <!DOCTYPE html>
+    <html >
+        <body id="main" style="font-family: monospace;" name="none" class="box" >
+            <p id="p1" class="what" readonly="" style="font-family: monospace;" name="none" >TEST!</p>
+            <p id="p2" style="font-family: Serif;" name="none" class="box" >TEST!</p>
+            <p id="p3" style="font-size: 50px;" name="none" class="box" >TEST! <em style="font-family: monospace;" name="none" class="box">STRONG</em></p>
+            <p id="p3" style="font-size: 50px;" class="special" name="none" >TEST! <em class="special" style="font-family: monospace;" name="none" >STRONG</em></p>
+        </body>
+    </html>
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
