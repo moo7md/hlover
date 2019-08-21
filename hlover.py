@@ -10,7 +10,6 @@ import os.path
 import sys
 import re
 
-from Class import Class
 
 # constants for !doctype
 doctypes = {"html5": '<!DOCTYPE html>',
