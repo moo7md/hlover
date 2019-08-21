@@ -108,6 +108,7 @@ Output =>
     </html>
     
 > Note: boolean attributes must be assigned with a value. It can not be alone. It will be fixed in future versions.
+
 > Also, I'm working on making sub-tags able to completely ignore their parents' inherited attributes and have their own attributes or none.
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
