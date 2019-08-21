@@ -109,7 +109,7 @@ Output =>
     
 > Note: boolean attributes must be assigned with a value. It can not be alone. It will be fixed in future versions.
 
-> Also, I'm working on making sub-tags able to completely ignore their parents' inherited attributes and have their own attributes or none.
+> To completely ignore the parent's inherited attributes, add '\*' right after the tag name. `!p*{}`
 ## Classes
 A class in Hlover is basically a container that contains a bunch of HTML elements. Classes will not be converted into HTML until they are being called by the user. This will help developmers easily genarate code programmingly and reduces the time to type every single tag again. 
 ### Syntax
