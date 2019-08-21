@@ -5,7 +5,14 @@ To use Hlover tool, you have to create your .hl file first. Then you have to dow
 
     python hlover.py yourfile.hl
 Currently, your HTML code will be printed to stdout, but in future versions your code will be written in a new file.
-
+## Table of content
+*   [Welcome to Hlover](#Welcome-to-Hlover)
+*   [How to use]()
+*   [Syntax]()
+*   [Example]()
+*   [Inheritance]()
+*   [Classes]()
+*   [Bugs]()
 ## Syntax
 Hlover syntax is simple. All HTML tags are preserved so it is much easier for HTML developers to use. There are two elements levels. 
 1. HTML level.
