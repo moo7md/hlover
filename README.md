@@ -150,7 +150,9 @@ Output =>
         </body>
     </html>
 > Note: best practice is to create your classes inside the body element.
-> Class names can't have spaces in between. 
+> Class names can't have spaces in between.
+
+> In future versions, Hlover will allow setting attributes for class calls. Like this: `$class_name[attributes]`
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
