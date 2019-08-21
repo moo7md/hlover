@@ -110,6 +110,37 @@ Output =>
 > Note: boolean attributes must be assigned with a value. It can not be alone. It will be fixed in future versions.
 
 > Also, I'm working on making sub-tags able to completely ignore their parents' inherited attributes and have their own attributes or none.
+## Classes
+A class in Hlover is basically a container that contains a bunch of HTML elements. Classes will not be converted into HTML until they are being called by the user. This will help developmers easily genarate code programmingly and reduces the time to type every single tag again. 
+### Syntax
+To constrcut a class you have to include '!' before the class tag similar to all HTML tags. Also, you have to include the class name so you could call it from the memory in the future. This is how it should look like:
+
+    !class:class_name{...}
+> class_name can be anything you like. 
+To call the class, you have to include '$' before the class name. And that's it. Hlover will write down the class’s content. This is how it should look like:
+
+    $class_name
+### Example
+    html5
+    html{
+        !body{
+            !class:my_class{
+                !p{Hello World\!}
+            }
+            $my_class
+        }
+    }
+Output =>
+    
+    <!DOCTYPE html>
+    <html >
+        <body >
+            
+            <p >Hello World!</p>
+        </body>
+    </html>
+> Note: best practice is to create your classes inside the body element.
+> Class names can't have spaces in between. 
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
