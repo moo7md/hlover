@@ -1,9 +1,11 @@
 html5
 html{
-    !body(style="font-family: monospace;" name="none" class="box")[id="main"]{
-        !p(class="what" readonly="")[id="p1"]{TEST\!}
-        !p[id="p2" style  = "font-family: Serif;"]{TEST\!}
-        !p[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
-        !p(class="special")[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
+    !body{
+       !class:box{
+            !div[style="width: 200px;hight: 200px;border: 1px solid black;border-radius: 5px;"]{
+                !p{}
+            }
+       }
+       !loop 5{$box!br[]}
     }
 }

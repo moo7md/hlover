@@ -9,6 +9,7 @@
 import os.path
 import sys
 import re
+
 from Class import Class
 
 # constants for !doctype
@@ -79,10 +80,6 @@ def writeScriptBody(char, file):
     return body
 
 
-def has(x):
-    return '' if x.count('"') == 2 else '"'
-
-
 def mirge_attr(attr, inherit_attr):
     # construct the new attr. Checks if there are overriding is happening
     new_attr = ''
@@ -105,7 +102,7 @@ def mirge_attr(attr, inherit_attr):
             new_attr += a_array[i] + ' '
             i += 2
         else:
-            if a_array[i+1].count('"') == 1:
+            if a_array[i + 1].count('"') == 1:
                 new_attr += a_array[i] + '=' + '"' + a_array[i + 1] + ' '
             else:
                 new_attr += a_array[i] + '=' + '"' + a_array[i + 1] + '" '
@@ -123,6 +120,25 @@ def mirge_attr(attr, inherit_attr):
             i += 2
 
     return new_attr
+
+
+def add_class(sub_tag, char, file, inherit_attr):
+    class_id = re.sub(r'class\s*:\s*', '', sub_tag).strip()
+    body = re.sub(r'<.*' + sub_tag + '.*>|</.*' + sub_tag + '.*>', '',
+                  do_element(file, char, sub_tag, inherit_attr)).strip()
+    mem.update({class_id: body})
+
+
+def loop_element(class_id, char, file, inherit_attr):
+    times = int(re.sub(r'loop\s+', '', class_id).strip())
+    class_body = re.sub(r'<\s*' + class_id + r'\s*>', '',
+                        do_element(file, char, class_id, inherit_attr).strip())
+    class_body = re.sub(r'</\s*' + class_id + r'\s*>', '',
+                        class_body).strip()
+    body = ''
+    for i in range(0, times):
+        body += class_body
+    return body
 
 
 def do_element(file, char, tag, inherit_attr):
@@ -158,14 +174,34 @@ def do_element(file, char, tag, inherit_attr):
             body = ' '
         while char != '}' and char != '':
             if char == '!':
+                ignore_attr = False
                 sub_tag = ''
                 char = file.read(1)
-                while char != '[' and char != '{' and char != '' and char != '(':
+                while char != '[' and char != '{' and char != '' and char != '(' and char != '!':
+                    if char == '*':
+                        ignore_attr = True
+                        char = file.read(1)
+                        continue
                     sub_tag += char
                     char = file.read(1)
-                sub_body = do_element(file, char, sub_tag, inherit_attr)
-                body += sub_body
+                if sub_tag.__contains__('class'):
+                    add_class(sub_tag, char, file, inherit_attr)
+                    char = file.read(1)
+                elif sub_tag.__contains__('loop'):
+                    body += loop_element(sub_tag, char, file, inherit_attr)
+                    char = file.read(1)
+                else:
+                    sub_body = do_element(file, char, sub_tag, '' if ignore_attr else inherit_attr)
+                    body += sub_body
+                    char = file.read(1)
+            elif char == '$':
+                class_id = ''
                 char = file.read(1)
+                while char != '' and char != ' ' and char != '\n' and char != '}' and char != '!' and char != '$':
+                    class_id += char
+                    char = file.read(1)
+                if mem.__contains__(class_id):
+                    body += mem[class_id]
             elif char == '\\':
                 body += file.read(1)
                 char = file.read(1)
@@ -180,7 +216,7 @@ def do_element(file, char, tag, inherit_attr):
         result += attr + '>'
         file.seek(file.tell() - 2)
     else:
-        if result[len(result)-1] != ' ':
+        if result[len(result) - 1] != ' ':
             result += ' '
         result += (attr if inherit_attr == '' or attr == inherit_attr else mirge_attr(attr,
                                                                                       inherit_attr)) + '>' + body + '</' + tag + '>'
