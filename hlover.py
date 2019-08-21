@@ -215,13 +215,12 @@ def start(file):
 
 
 def main():
-    # if len(sys.argv) == 1:
-    #     print("Error: no input files")
-    # elif str(sys.argv[1]).endswith('.hl'):
-    #     start_working(sys.argv[1])
-    # else:
-    #     print("Error: unsupported file type")
-    start_working('/Users/moo7md/PycharmProjects/hlover/hloverSyntax.hl')
+    if len(sys.argv) == 1:
+        print("Error: no input files")
+    elif str(sys.argv[1]).endswith('.hl'):
+        start_working(sys.argv[1])
+    else:
+        print("Error: unsupported file type")
 
 
 def start_working(filename):

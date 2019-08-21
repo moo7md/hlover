@@ -2,7 +2,8 @@ html5
 html{
     !body(style="font-family: monospace;" name="none" class="box")[id="main"]{
         !p(class="what" readonly="")[id="p1"]{TEST\!}
-        !p(class="what" readonly="")[id="p2" style  = "font-family: Serif;"]{TEST\!}
+        !p[id="p2" style  = "font-family: Serif;"]{TEST\!}
         !p[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
+        !p(class="special")[id="p3" style="font-size: 50px;"]{TEST\! !em{STRONG}}
     }
 }
