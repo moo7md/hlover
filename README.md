@@ -96,6 +96,7 @@ In addition, sub-tags can override their parents' inherited attributes by placin
         }
     }
 Output =>
+
     <!DOCTYPE html>
     <html >
         <body id="main" style="font-family: monospace;" name="none" class="box" >
@@ -105,8 +106,13 @@ Output =>
             <p id="p3" style="font-size: 50px;" class="special" name="none" >TEST! <em class="special" style="font-family: monospace;" name="none" >STRONG</em></p>
         </body>
     </html>
+    
+> Note: boolean attributes must be assigned with a value. It can not be alone. It will be fixed in future versions.
+
+> Also, I'm working on making sub-tags able to completely ignore their parents' inherited attributes and have their own attributes or none.
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
 * ~~style element is not working yet.~~
 * ~~comments are not working properly.~~
+* Boolean attributes (with name only) not supported yet.
