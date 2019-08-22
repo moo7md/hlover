@@ -127,6 +127,7 @@ To constrcut a class you have to include '!' before the class tag similar to all
 
     !class:class_name{...}
 > class_name can be anything you like. 
+
 To call the class, you have to include '$' before the class name. And that's it. Hlover will write down the class’s content. This is how it should look like:
 
     $class_name
