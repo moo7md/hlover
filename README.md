@@ -15,6 +15,7 @@ Currently, your HTML code will be printed to stdout, but in future versions your
 *   [Example](#Example)
 *   [Inheritance](#Inheritance)
 *   [Classes](#Classes)
+*   [Loops](#Loops)
 *   [Bugs](#Bugs)
 ## Syntax
 Hlover syntax is simple. All HTML tags are preserved so it is much easier for HTML developers to use. There are two elements levels. 
@@ -154,6 +155,22 @@ Output =>
 > Class names can't have spaces in between.
 
 > In future versions, Hlover will allow setting attributes for class calls. Like this: `$class_name[attributes]`
+## Loops
+Loops allows users to create blocks of codes a number of times. This make genarating code much easier than writing normal HTML code. You must remeber you have to provide the number of iteration in order for `loop` to work properly.
+### Syntax
+To generate blocks of codes using the `loop` feature, the user have to include "!" (if it was in Element level) and to include the iteration value. It should look like this
+
+    !loop 5 {
+        p{Hi}
+    }
+Output =>
+
+    <p>hi</p>
+    <p>hi</p>
+    <p>hi</p>
+    <p>hi</p>
+    <p>hi</p>
+> Note: `loop` does not support attributes Inheritance, but it will in future versions.
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
