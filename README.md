@@ -133,7 +133,7 @@ To call the class, you have to include '$' before the class name. And that's it.
 
     $class_name
 ### Adding Arguments to Classes
-Now users can added arguments to their classes to add more control over them. This feature work by putting the arguments inside "()" after the class name. These arguments can be used in any part of the class body.
+Users can add arguments to their classes to add more control over them. This feature work by putting the arguments inside "()" after the class name. These arguments can be used in any part of the class body.
 #### Setting up
 To add arguments to your class simply follow this example:
 
