@@ -142,6 +142,14 @@ To add arguments to your class simply follow this example:
 To use and call the class with arguments, follow this example
 
     $aClass("ARG1", "ARG2")
+#### Example
+    !class:aClass($id){
+        !p[id=$id]{Test}
+    }
+    $aClass("anId")
+output =>
+    
+    <p id="anId">Test</p>
 ### Example
     html5
     html{
