@@ -132,6 +132,12 @@ To constrcut a class you have to include '!' before the class tag similar to all
 To call the class, you have to include '$' before the class name. And that's it. Hlover will write down the class’s content. This is how it should look like:
 
     $class_name
+### Adding Arguments to Classes
+Now users can added arguments to their classes to add more control over them. This feature work by putting the arguments inside "()" after the class name. These arguments can be used in any part of the class body.
+#### Seting up
+To add arguments to your class simply follow this example:
+    !class:aClass($arg1, $arg2){...}
+
 ### Example
     html5
     html{
