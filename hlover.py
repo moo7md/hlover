@@ -10,6 +10,15 @@ import os.path
 import sys
 import re
 
+# class for Hlover classes
+class Class:
+    def __init__(self, body, args):
+        self.body = body
+        self.args = args
+    def __setArgs__(self, args):
+        self.args = args
+    def __setBody__(self, body):
+        self.body = body
 
 # constants for !doctype
 doctypes = {"html5": '<!DOCTYPE html>',
@@ -30,18 +39,20 @@ doctypes = {"html5": '<!DOCTYPE html>',
 mem = {}
 
 
-def get_string(char, file):
+def get_string(char, file, fromVar=False):
     # handles strings in JavaScript
     string = char
     char = file.read(1)
     counter = 0 if char == '"' else 1
-    while counter != 0 and char != '':
+    while counter > 0 and char != '':
         if char == '\\':
             string += char
             string += file.read(1)
         elif char == '"' or '\'':
             counter -= 1
             string += char
+            break
+        elif fromVar and char == '}':
             break
         else:
             string += char
@@ -55,7 +66,7 @@ def writeScriptBody(char, file):
     # only write the body of <script>
     body = ''
     counter = 0 if char == '}' else 1
-    while char != '' and counter != 0:
+    while char != '' and counter > 0:
         if char == '{':
             body += char
             counter += 1
@@ -120,13 +131,76 @@ def mirge_attr(attr, inherit_attr):
 
     return new_attr
 
+def getClassArgs(file):
+    # grabs the arguments for a class
+    # syntax: !class:class($x, $y)
+    args = {}
+    char = file.read(1)
+    var = ''
+    while char != '' and char != ')':
+        if char == '$':
+            var = char
+        elif char == ',':
+            args.update({var: ''})
+            var = ''
+        elif char != ' ':
+            var += char
+        char = file.read(1)
+    if len(var) > 1:
+        args.update({var: ''})
+    return args
+
+def grapClassArgs(file):
+    # given a class call, grap the args
+    char = file.read(1)
+    value = ''
+    values = []
+    counter = 1
+    openString = char == '"'
+    while char != '' and counter > 0:
+        value += char
+        char = file.read(1)
+        if char == ',' and not openString:
+            values.append(value.strip())
+            value = ''
+            char = file.read(1)
+        if char == '(':
+            counter += 1
+        if char == ')':
+            counter -= 1
+        if char == '"':
+            openString = not openString
+    if len(value) > 0:
+        values.append(value.strip())
+    return values
+    
+def link_args(class_id, argsValues):
+    classObject = mem[class_id]
+    keys = list(classObject.args)
+    i = 0
+    for value in argsValues:
+        classObject.args.update({keys[i]: value})
+        i += 1
+        if (len(keys) <= i):
+            break
+    
 
 def add_class(sub_tag, char, file, inherit_attr):
     class_id = re.sub(r'class\s*:\s*', '', sub_tag).strip()
+    args = getClassArgs(file) if char == '(' else {}
+    char = file.read(1) if char == '(' else char
     body = re.sub(r'<.*' + sub_tag + '.*>|</.*' + sub_tag + '.*>', '',
                   do_element(file, char, sub_tag, inherit_attr)).strip()
     mem.update({class_id: body})
+    aClass = Class(body, args)
+    mem.update({class_id: aClass})
 
+def add_var(sub_tag, char, file, inherit_attr):
+    var_id = re.sub(r'var\s*:\s*', '', sub_tag).strip()
+    char = file.read(1)
+    body = get_string(char, file, True)
+    print(body)
+    mem.update({var_id: body})
 
 def loop_element(class_id, char, file, inherit_attr):
     times = int(re.sub(r'loop\s+', '', class_id).strip())
@@ -139,6 +213,14 @@ def loop_element(class_id, char, file, inherit_attr):
         body += class_body
     return body
 
+def place_args_in_body(class_id):
+    # places the variables' values into the body
+    classObject = mem[class_id]
+    classBody = classObject.body
+    args = classObject.args
+    for key in list(args.keys()):
+        classBody = classBody.replace(key, args[key])
+    return classBody
 
 def do_element(file, char, tag, inherit_attr):
     result = '<' + tag
@@ -189,18 +271,29 @@ def do_element(file, char, tag, inherit_attr):
                 elif sub_tag.__contains__('loop'):
                     body += loop_element(sub_tag, char, file, inherit_attr)
                     char = file.read(1)
+                elif sub_tag.__contains__('var'):
+                    add_var(sub_tag, char, file, inherit_attr)
+                    char = file.read(1)
                 else:
                     sub_body = do_element(file, char, sub_tag, '' if ignore_attr else inherit_attr)
                     body += sub_body
                     char = file.read(1)
             elif char == '$':
                 class_id = ''
+                args = []
                 char = file.read(1)
                 while char != '' and char != ' ' and char != '\n' and char != '}' and char != '!' and char != '$':
-                    class_id += char
-                    char = file.read(1)
-                if mem.__contains__(class_id):
-                    body += mem[class_id]
+                    if char == '(':
+                        args = grapClassArgs(file)
+                        char = file.read(1)
+                    else:
+                        class_id += char
+                        char = file.read(1)
+                if len(args) > 0 and mem.__contains__(class_id):
+                    link_args(class_id, args)
+                    body += place_args_in_body(class_id)
+                elif mem.__contains__(class_id):
+                    body += mem[class_id].body
             elif char == '\\':
                 body += file.read(1)
                 char = file.read(1)
