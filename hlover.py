@@ -12,13 +12,16 @@ import re
 
 # class for Hlover classes
 class Class:
-    def __init__(self, body, args):
+    def __init__(self, body, args, orderedArgs):
         self.body = body
         self.args = args
+        self.orderedArgs = orderedArgs
     def __setArgs__(self, args):
         self.args = args
     def __setBody__(self, body):
         self.body = body
+    def __setOrderedArgs__(self, orderedArgs):
+        self.orderedArgs = orderedArgs
 
 # constants for !doctype
 doctypes = {"html5": '<!DOCTYPE html>',
@@ -37,6 +40,10 @@ doctypes = {"html5": '<!DOCTYPE html>',
                         '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'}
 # memory to hold classes and variables
 mem = {}
+
+def import_files(char, file):
+    # work on this later
+    pass
 
 
 def get_string(char, file, fromVar=False):
@@ -134,21 +141,25 @@ def mirge_attr(attr, inherit_attr):
 def getClassArgs(file):
     # grabs the arguments for a class
     # syntax: !class:class($x, $y)
+    # this will return [the args, and the order of the args]
     args = {}
+    argsKeysOrder = []
     char = file.read(1)
     var = ''
     while char != '' and char != ')':
         if char == '$':
             var = char
         elif char == ',':
-            args.update({var: ''})
+            argsKeysOrder.append(var)
+            args[var] = ''
             var = ''
         elif char != ' ':
             var += char
         char = file.read(1)
     if len(var) > 1:
-        args.update({var: ''})
-    return args
+        argsKeysOrder.append(var)
+        args[var] = ''
+    return [args, argsKeysOrder]
 
 def grapClassArgs(file):
     # given a class call, grap the args
@@ -158,7 +169,7 @@ def grapClassArgs(file):
     counter = 1
     openString = char == '"'
     while char != '' and counter > 0:
-        value += char
+        value += char if char != '"' else ''
         char = file.read(1)
         if char == ',' and not openString:
             values.append(value.strip())
@@ -176,30 +187,32 @@ def grapClassArgs(file):
     
 def link_args(class_id, argsValues):
     classObject = mem[class_id]
-    keys = list(classObject.args)
+    orderedArgs = classObject.orderedArgs
+    if len(orderedArgs) != len(argsValues):
+        message = 'Incorrect class call: wrong number of parameters. Class has ' + str(len(orderedArgs)) + ' parameters but was given ' + str(len(argsValues))
+        raise Exception(message)
     i = 0
     for value in argsValues:
-        classObject.args.update({keys[i]: value})
+        classObject.args[orderedArgs[i]] = value
         i += 1
-        if (len(keys) <= i):
-            break
     
 
 def add_class(sub_tag, char, file, inherit_attr):
     class_id = re.sub(r'class\s*:\s*', '', sub_tag).strip()
-    args = getClassArgs(file) if char == '(' else {}
+    argsAndOrder = getClassArgs(file) if char == '(' else {}
+    args = argsAndOrder[0]
+    orderedArgs = argsAndOrder[1]
     char = file.read(1) if char == '(' else char
     body = re.sub(r'<.*' + sub_tag + '.*>|</.*' + sub_tag + '.*>', '',
                   do_element(file, char, sub_tag, inherit_attr)).strip()
     mem.update({class_id: body})
-    aClass = Class(body, args)
+    aClass = Class(body, args, orderedArgs)
     mem.update({class_id: aClass})
 
 def add_var(sub_tag, char, file, inherit_attr):
     var_id = re.sub(r'var\s*:\s*', '', sub_tag).strip()
     char = file.read(1)
     body = get_string(char, file, True)
-    print(body)
     mem.update({var_id: body})
 
 def loop_element(class_id, char, file, inherit_attr):
@@ -218,9 +231,31 @@ def place_args_in_body(class_id):
     classObject = mem[class_id]
     classBody = classObject.body
     args = classObject.args
-    for key in list(args.keys()):
-        classBody = classBody.replace(key, args[key])
-    return classBody
+    orderedArgs = classObject.orderedArgs
+    result = ''
+    i = 0
+    while i < len(classBody):
+        char = classBody[i]
+        if char == '$':
+            var_name = char
+            i += 1
+            if i >= len(classBody):
+                raise Exception('Incorrect syntax')
+            char = classBody[i]
+            while (char != '!' and char != ' ' and char != '-' and char != '<') and i < len(classBody):
+                var_name += char
+                i += 1
+                if i >= len(classBody):
+                    raise Exception('Incorrect syntax')
+                char = classBody[i]
+            if args.__contains__(var_name):
+                result += args[var_name]
+            else:
+                raise Exception(var_name + ' is not defined in memeory')
+        else:
+            result += char
+            i += 1
+    return result
 
 def do_element(file, char, tag, inherit_attr):
     result = '<' + tag
@@ -263,6 +298,9 @@ def do_element(file, char, tag, inherit_attr):
                         ignore_attr = True
                         char = file.read(1)
                         continue
+                    if char == '-' and not sub_tag.__contains__('--'):
+                        sub_tag += '!' + char
+                        char = file.read(1)
                     sub_tag += char
                     char = file.read(1)
                 if sub_tag.__contains__('class'):
@@ -294,6 +332,8 @@ def do_element(file, char, tag, inherit_attr):
                     body += place_args_in_body(class_id)
                 elif mem.__contains__(class_id):
                     body += mem[class_id].body
+                else:
+                    body += '$'+class_id
             elif char == '\\':
                 body += file.read(1)
                 char = file.read(1)
@@ -310,9 +350,11 @@ def do_element(file, char, tag, inherit_attr):
     else:
         if result[len(result) - 1] != ' ':
             result += ' '
-        result += (attr if inherit_attr == '' or attr == inherit_attr else mirge_attr(attr,
+        if tag.__contains__('!--'):
+            result += body + tag.replace('!', '') +'>'
+        else:
+            result += (attr if inherit_attr == '' or attr == inherit_attr else mirge_attr(attr,
                                                                                       inherit_attr)) + '>' + body + '</' + tag + '>'
-
     return result
 
 
