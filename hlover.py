@@ -200,8 +200,8 @@ def link_args(class_id, argsValues):
 def add_class(sub_tag, char, file, inherit_attr):
     class_id = re.sub(r'class\s*:\s*', '', sub_tag).strip()
     argsAndOrder = getClassArgs(file) if char == '(' else {}
-    args = argsAndOrder[0]
-    orderedArgs = argsAndOrder[1]
+    args = argsAndOrder[0] if len(argsAndOrder) > 0 else {}
+    orderedArgs = argsAndOrder[1] if len(argsAndOrder) > 0 else []
     char = file.read(1) if char == '(' else char
     body = re.sub(r'<.*' + sub_tag + '.*>|</.*' + sub_tag + '.*>', '',
                   do_element(file, char, sub_tag, inherit_attr)).strip()
