@@ -16,6 +16,7 @@ Currently, your HTML code will be printed to stdout, but in future versions your
 *   [Inheritance](#Inheritance)
 *   [Classes](#Classes)
 *   [Loops](#Loops)
+*   [Comments] (#Comments)
 *   [Bugs](#Bugs)
 ## Syntax
 Hlover syntax is simple. All HTML tags are preserved so it is much easier for HTML developers to use. There are two elements levels. 
@@ -189,6 +190,13 @@ Output =>
     <p>hi</p>
     <p>hi</p>
 > Note: `loop` does not support attributes Inheritance, but it will in future versions.
+## Comments
+Comments in Hlover are very simple. These comments are exactly how comments work in regular HTML syntax which means it's a multilined comments for documentation or any other purpose.
+###Syntax
+ To write a comment in Hlover, simply start with the `!--` tag and open a code block after it. Anything inside the code block will be converted into regular HTML comment
+    !--{This is an example on how comments work in Hlover}
+Output ==>
+    <!--This is an example on how comments work in Hlover-->
 ## Bugs
 * ~~Currently, Hlover is still in its alpha phase and some HTML tags don't work properly such as `script` body. However, I will be working on imporiving Hlover to be the perfect HTML tool.~~ FIXED
 * ~~some characters like !, {, }, [, ], need to be escaped.~~ FIXED
