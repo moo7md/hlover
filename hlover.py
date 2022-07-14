@@ -242,14 +242,16 @@ def place_args_in_body(class_id):
             if i >= len(classBody):
                 raise Exception('Incorrect syntax')
             char = classBody[i]
-            while (char != '!' and char != ' ' and char != '-' and char != '<') and i < len(classBody):
+            while char != '!' and char != ' ' and char != '-' and char != '<' and char != '\n' and i < len(classBody):
                 var_name += char
+                if args.__contains__(var_name):
+                    result += args[var_name]
+                    i += 1
+                    break
                 i += 1
                 if i >= len(classBody):
                     raise Exception('Incorrect syntax')
                 char = classBody[i]
-            if args.__contains__(var_name):
-                result += args[var_name]
             else:
                 raise Exception(var_name + ' is not defined in memeory')
         else:
