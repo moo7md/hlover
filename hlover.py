@@ -156,6 +156,14 @@ def getClassArgs(file):
         elif char != ' ':
             var += char
         char = file.read(1)
+    char = file.read(1)
+    # patch: skip white space before "{"
+    while char == ' ':
+	print('char is "'+char+'"')
+	char = file.read(1)
+    # patch: if char is "{" seek back one character
+    if char == '{':
+	file.seek(-1,1)    
     if len(var) > 1:
         argsKeysOrder.append(var)
         args[var] = ''
