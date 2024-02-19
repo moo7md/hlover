@@ -225,13 +225,17 @@ def add_var(sub_tag, char, file, inherit_attr):
 
 def loop_element(class_id, char, file, inherit_attr):
     times = int(re.sub(r'loop\s+', '', class_id).strip())
-    class_body = re.sub(r'<\s*' + class_id + r'\s*>', '',
-                        do_element(file, char, class_id, inherit_attr).strip())
-    class_body = re.sub(r'</\s*' + class_id + r'\s*>', '',
-                        class_body).strip()
     body = ''
+    post_loop_pos = file.tell()
     for i in range(0, times):
+        mem.update({'i': i})
+        class_body = re.sub(r'<\s*' + class_id + r'\s*>', '',
+                        do_element(file, char, class_id, inherit_attr).strip())
+        class_body = re.sub(r'</\s*' + class_id + r'\s*>', '',
+                        class_body).strip()
         body += class_body
+        if i < times - 1:
+            file.seek(-(file.tell() - post_loop_pos),1)
     return body
 
 def place_args_in_body(class_id):
@@ -341,7 +345,11 @@ def do_element(file, char, tag, inherit_attr):
                     link_args(class_id, args)
                     body += place_args_in_body(class_id)
                 elif mem.__contains__(class_id):
-                    body += mem[class_id].body
+                    mem_item = mem[class_id]
+                    if mem_item is Class:
+                        body += mem_item.body
+                    else:
+                        body += str(mem_item)
                 else:
                     body += '$'+class_id
             elif char == '\\':
